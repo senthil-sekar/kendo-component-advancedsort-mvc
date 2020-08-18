@@ -39,7 +39,7 @@ When working with this project:
     - When creating a new cshtml file, set its Custom Tool property to RazorGenerator
     - When adding a new javascript or css file, go to the property window and set the Build Action to 'Embedded Resource'
 
-When creatng a new class library project similar to this:
+Or When creatng a new class library project similar to this:
  
     - Create a new C# project using the Class Library template, for framework version 4.8
     - Change Project Properties Build output path to bin\ (not bin\Debug) for both Debug and Release
@@ -52,7 +52,7 @@ When creatng a new class library project similar to this:
         - RazorGenerator.Mvc
         - PrecompiledMvcViewEngineContrib
     
-    You also need to do the follwing change to your new class library project, to enable mvc intellisense and to have Mvc Razore Views in the Add New Item dialog box.
+    You also need to do the following change to your new class library project, to enable mvc intellisense and to have Mvc Razore Views in the Add New Item dialog box.
 
     - Add ProjectTypeGuids to .csproj (edit as text) after ProjectGUID: 
       <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -60,7 +60,7 @@ When creatng a new class library project similar to this:
     - Add a web.config file to the view folder. The Visual Studio editor expects to see this file to render Razor Views.
       You can copy the one you see in this project and update the dependencies if needed
 
-                                    OR
+                                    OR (recommended)
 
     - Simply create the regular ASP.NET MVC project (because ASP.NET MVC project will also output as class library) and remove all the unwanted files.
     - You can refer this project strcture to get the details on what to keep and what to delete.
