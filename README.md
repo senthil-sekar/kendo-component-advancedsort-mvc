@@ -1,4 +1,4 @@
-﻿This project is aimed to create a razor view component in a .NET class library, for the purpose of reusability and modularity. 
+﻿This project is aimed to create a advanced sort razor view component (for Kendo) in a .NET class library, for the purpose of reusability and modularity. 
 However, it’s not a built-in functionality from ASP.NET MVC and takes some custom work to set up, as explained in this document. 
 
 ********************************************************
