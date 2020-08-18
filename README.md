@@ -76,8 +76,7 @@ Pre-Requisite:
 
     - This component is created for ASP.NET MVC 5, so the client ptoject should also be ASP.NET MVC 5
     - This project is a custom component extention for Kendo MVC dll. So the client project must have all the Kendo MVC references added.
-    - This project also have components intracts with Kendo Grid that is rendered using FirstStrike.Retail.GridBuilder, so the client project must have support for FirstStrike.Retail.GridBuilder.
-
+    
 Web.Config Change:
 
     - This project delivers static resources (e.g. js file) via a HTTP Handler, so the client project must add the following handlers to the web.config
