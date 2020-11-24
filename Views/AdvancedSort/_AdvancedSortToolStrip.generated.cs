@@ -27,7 +27,7 @@ namespace Kendo.Component.AdvancedSort.Mvc
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
-    using FirstStrike.Retail.Web.KendoComponent.Mvc;
+    using Kendo.Component.AdvancedSort.Mvc;
     
     #line 3 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
     using Kendo.Component.AdvancedSort.Mvc.Models;
@@ -54,36 +54,36 @@ WriteLiteral("\r\n");
 
             
             #line 5 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
-Write(Html.AdvancedSortSharedResource(new { UseDefaultSortIconStyle = Model.UseDefaultSortIconStyle }));
+Write(Html.AdvancedSortSharedResource(new { UseDefaultSortIconStyle = Model.UseDefaultSortIconStyle, GridName = Model.GridName }));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n<a");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 258), Tuple.Create("\"", 364)
+WriteAttribute("style", Tuple.Create(" style=\"", 285), Tuple.Create("\"", 391)
             
             #line 6 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
-, Tuple.Create(Tuple.Create("", 266), Tuple.Create<System.Object, System.Int32>(string.IsNullOrEmpty(Model.ButtonOpenSortStyle) ? "margin-left:5px" : Model.ButtonOpenSortStyle
+, Tuple.Create(Tuple.Create("", 293), Tuple.Create<System.Object, System.Int32>(string.IsNullOrEmpty(Model.ButtonOpenSortStyle) ? "margin-left:5px" : Model.ButtonOpenSortStyle
             
             #line default
             #line hidden
-, 266), false)
+, 293), false)
 );
 
 WriteLiteral(" class=\"k-button-primary\"");
 
 WriteLiteral(" title=\"Open Sort Popup\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 414), Tuple.Create("\"", 444)
+WriteAttribute("id", Tuple.Create(" id=\"", 441), Tuple.Create("\"", 471)
             
             #line 6 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
-                                                                                    , Tuple.Create(Tuple.Create("", 419), Tuple.Create<System.Object, System.Int32>(Model.GridName
+                                                                                    , Tuple.Create(Tuple.Create("", 446), Tuple.Create<System.Object, System.Int32>(Model.GridName
             
             #line default
             #line hidden
-, 419), false)
-, Tuple.Create(Tuple.Create("", 434), Tuple.Create("-openpopup", 434), true)
+, 446), false)
+, Tuple.Create(Tuple.Create("", 461), Tuple.Create("-openpopup", 461), true)
 );
 
 WriteLiteral("><span");
@@ -92,29 +92,29 @@ WriteLiteral(" class=\"k-icon k-i-sort-desc\"");
 
 WriteLiteral("></span></a>\r\n<a");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 496), Tuple.Create("\"", 604)
+WriteAttribute("style", Tuple.Create(" style=\"", 523), Tuple.Create("\"", 631)
             
             #line 7 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
-, Tuple.Create(Tuple.Create("", 504), Tuple.Create<System.Object, System.Int32>(string.IsNullOrEmpty(Model.ButtonClearSortStyle) ? "margin-left:5px" : Model.ButtonClearSortStyle
+, Tuple.Create(Tuple.Create("", 531), Tuple.Create<System.Object, System.Int32>(string.IsNullOrEmpty(Model.ButtonClearSortStyle) ? "margin-left:5px" : Model.ButtonClearSortStyle
             
             #line default
             #line hidden
-, 504), false)
+, 531), false)
 );
 
 WriteLiteral(" class=\"k-button-primary\"");
 
 WriteLiteral(" title=\"Clear Sort\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 649), Tuple.Create("\"", 679)
+WriteAttribute("id", Tuple.Create(" id=\"", 676), Tuple.Create("\"", 706)
             
             #line 7 "..\..\Views\AdvancedSort\_AdvancedSortToolStrip.cshtml"
-                                                                                 , Tuple.Create(Tuple.Create("", 654), Tuple.Create<System.Object, System.Int32>(Model.GridName
+                                                                                 , Tuple.Create(Tuple.Create("", 681), Tuple.Create<System.Object, System.Int32>(Model.GridName
             
             #line default
             #line hidden
-, 654), false)
-, Tuple.Create(Tuple.Create("", 669), Tuple.Create("-clearsort", 669), true)
+, 681), false)
+, Tuple.Create(Tuple.Create("", 696), Tuple.Create("-clearsort", 696), true)
 );
 
 WriteLiteral("><span");

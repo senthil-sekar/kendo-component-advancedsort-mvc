@@ -8,8 +8,8 @@ export class AdvancedSort {
     private controller: AdvancedSortController = null;
     private componentVariable: AdvancedSortEntities.ComponentVariable = null;
 
-    constructor(gridName: string, excludedColumn: Array<string>) {
-        this.componentVariable = new AdvancedSortEntities.ComponentVariable(gridName, excludedColumn);
+    constructor(options: any) {
+        this.componentVariable = new AdvancedSortEntities.ComponentVariable(options);
         this.controller = new AdvancedSortController(this.componentVariable);
         this.onLoad();
     }
@@ -34,12 +34,16 @@ export class AdvancedSort {
             }
         );
 
+        // check and unbind click event, if attached already
+        if (this.componentVariable.openPopupButton.isBoundToEvent('click')) {
+            this.componentVariable.openPopupButton.unbind("click");
+        }
+        if (this.componentVariable.clearSortButton.isBoundToEvent('click')) {
+            this.componentVariable.clearSortButton.unbind("click");
+        }
+
         // wire button events
-        if (!this.componentVariable.openPopupButton.isBoundToEvent('click')) {
-            this.componentVariable.openPopupButton.click(() => this.controller.openPopup());
-        }
-        if (!this.componentVariable.clearSortButton.isBoundToEvent('click')) {
-            this.componentVariable.clearSortButton.click(() => this.controller.clearSort());
-        }
+        this.componentVariable.openPopupButton.click(() => this.controller.openPopup());
+        this.componentVariable.clearSortButton.click(() => this.controller.clearSort());
     }
 }

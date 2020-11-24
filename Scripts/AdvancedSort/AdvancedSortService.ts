@@ -9,10 +9,10 @@ export class AdvancedSortService {
 
     constructor(componentVariable: AdvancedSortEntities.ComponentVariable) {
         this.componentVariable = componentVariable;
-        this.localStorage = new AdvancedSortLocalStorage(this.componentVariable.gridName);
+        this.localStorage = new AdvancedSortLocalStorage(this.componentVariable.localStorageKey);
     }
 
-    public get sortColumns(): Array<AdvancedSortEntities.SortColumn>{
+    public get sortColumns(): Array<AdvancedSortEntities.SortColumn> {
         return this.localStorage.sortColumns
             .filter(x => {
                 return this.componentVariable.colFieldMap.some(y => y.columnValue === x.columnValue);

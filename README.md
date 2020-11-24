@@ -1,6 +1,6 @@
 # AdvancedSort Component for Kendo Grid
 
-This project is aimed to create a advanced sort razor view component (for Kendo) in a .NET class library, for the purpose of reusability and modularity. 
+This project is aimed to create a razor view component in a .NET class library, for the purpose of reusability and modularity. 
 However, it’s not a built-in functionality from ASP.NET MVC and takes some custom work to set up, as explained in this document. 
 
 ********************************************************
@@ -39,7 +39,7 @@ When working with this project:
     - When creating a new cshtml file, set its Custom Tool property to RazorGenerator
     - When adding a new javascript or css file, go to the property window and set the Build Action to 'Embedded Resource'
 
-Or When creatng a new class library project similar to this:
+When creatng a new class library project similar to this:
  
     - Create a new C# project using the Class Library template, for framework version 4.8
     - Change Project Properties Build output path to bin\ (not bin\Debug) for both Debug and Release
@@ -52,7 +52,7 @@ Or When creatng a new class library project similar to this:
         - RazorGenerator.Mvc
         - PrecompiledMvcViewEngineContrib
     
-    You also need to do the following change to your new class library project, to enable mvc intellisense and to have Mvc Razore Views in the Add New Item dialog box.
+    You also need to do the follwing change to your new class library project, to enable mvc intellisense and to have Mvc Razore Views in the Add New Item dialog box.
 
     - Add ProjectTypeGuids to .csproj (edit as text) after ProjectGUID: 
       <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -60,7 +60,7 @@ Or When creatng a new class library project similar to this:
     - Add a web.config file to the view folder. The Visual Studio editor expects to see this file to render Razor Views.
       You can copy the one you see in this project and update the dependencies if needed
 
-                                    OR (recommended)
+                                    OR
 
     - Simply create the regular ASP.NET MVC project (because ASP.NET MVC project will also output as class library) and remove all the unwanted files.
     - You can refer this project strcture to get the details on what to keep and what to delete.
@@ -76,19 +76,20 @@ Pre-Requisite:
 
     - This component is created for ASP.NET MVC 5, so the client ptoject should also be ASP.NET MVC 5
     - This project is a custom component extention for Kendo MVC dll. So the client project must have all the Kendo MVC references added.
-    
+    - This project also have components intracts with Kendo Grid that is rendered using FirstStrike.Retail.GridBuilder, so the client project must have support for FirstStrike.Retail.GridBuilder.
+
 Web.Config Change:
 
     - This project delivers static resources (e.g. js file) via a HTTP Handler, so the client project must add the following handlers to the web.config
 
     <system.web>
         <httpHandlers>
-		    <add path="KendoComponentMvcResource.axd" verb="GET" type="Kendo.Component.AdvancedSort.Mvc.WebResourceHandler, Kendo.Component.AdvancedSort.Mvc"/>
+		    <add path="FirstStrike.Retail.WebKendoComponentMvcResource.axd" verb="GET" type="FirstStrike.Retail.Web.KendoComponent.Mvc.WebResourceHandler, FirstStrike.Retail.Web.KendoComponent.Mvc"/>
         </httpHandlers>
     </system.web>
     <system.webServer>
         <handlers>
-            <add name="KendoMvcResourceHandler" path="KendoComponentMvcResource.axd" verb="GET" type="Kendo.Component.AdvancedSort.Mvc.WebResourceHandler, Kendo.Component.AdvancedSort.Mvc" preCondition="integratedMode" />
+            <add name="FirstStrikeRetailWebKendoMvcResourceHandler" path="FirstStrike.Retail.WebKendoComponentMvcResource.axd" verb="GET" type="FirstStrike.Retail.Web.KendoComponent.Mvc.WebResourceHandler, FirstStrike.Retail.Web.KendoComponent.Mvc" preCondition="integratedMode" />
 	    </handlers>
     </system.webServer>
 
@@ -96,7 +97,7 @@ Adding the component to the View:
 
     First add dependencies
 
-        - Add reference to the Kendo.Component.AdvancedSort.Mvc.dll
+        - Add reference to the FirstStrike.Retail.Web.KendoComponent.Mvc.dll
         - Using Nuget Package manager add the RazorGenerator.Mvc package
     
     Then use any of the following option to configure your page to have advansed sort
@@ -121,21 +122,28 @@ Adding the component to the View:
                 @Html.AdvancedSortFor("{grid-name}", new { PreventAutoInitialize: true })
 
                 When this switch is set to default. The component is added to the view but not intialised. You have to manually intilise from your javascript code using the below code.
-                    $('#{grid-name}').AdvancedSortGridExtention().init();
+                    
+                    $('#{grid-name}').AdvancedSortGridExtention().init({
+                        excludedColumn: ["column1","column2"],  //optional
+                        localStorageKey: 'storagekey'           //optional, default is empty, by default grid name is used as a storage key, so in cases like the grid name is same but the columns are diferent, use this attr to set the custom key for local storage 
+                    });
+
                 This is helpful in case like, the grid refreshes based on a dropdown change event. You put this, after the code that loads/refresh the grid. 
 
         - Using Javascript code. This is usefull when you are required to add Advanced Sort dynamically.
 
             1. Load the Static resources to the page but putting the below code on the top of the page
-                 @using Kendo.Component.AdvancedSort.Mvc
+                 @using FirstStrike.Retail.Web.KendoComponent.Mvc
                  @Html.AdvancedSortSharedResource()
 
             2. Create a placeholder for the advanced sort control to load in, like this <div id="advancedSortPanel"></div>. This would usually goes inside the grid toolbar container.
 
             3. Intialise the sort like below. This should be called after the grid is initialised. 
+
                 $("#advancedSortPanel").AdvancedSort({
                     gridName: 'your-grid-name',             //required
-                    excludedColumn: [],                     //optional
+                    excludedColumn: ["column1","column2"],  //optional
+                    localStorageKey: 'storagekey'           //optional, default is empty, by default grid name is used as a storage key, so in cases like the grid name is same but the columns are diferent, use this attr to set the custom key for local storage 
                     buttonOpenSortStyle: 'margin: 0',       //optional
                     buttonClearSortStyle: 'margin: 0'       //optional
                 });

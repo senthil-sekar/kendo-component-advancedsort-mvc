@@ -24,6 +24,7 @@ export module AdvancedSortEntities {
 
     export class ComponentVariable {
         public gridName: string;
+        public localStorageKey: string;
         public excludedColumn: Array<string>;
 
         public sortPopupWindow: any;
@@ -41,17 +42,18 @@ export module AdvancedSortEntities {
 
         public colFieldMap: Array<AdvancedSortEntities.SortColumn>;
         public isAdvancedSortApplied: boolean;
-        
-        constructor(gridName: string, excludedColumn: Array<string>) {
-            this.gridName = gridName;
-            this.excludedColumn = excludedColumn;
+
+        constructor(options: any) {
+            this.gridName = options.gridName;
+            this.localStorageKey = options.localStorageKey && options.localStorageKey !== '' ? options.localStorageKey : options.gridName;
+            this.excludedColumn = options.excludedColumn;
 
             this.sortPopupWindow = $("#advanced-sort");
             this.sortPopupWindowContent = $("#advanced-sort .sort-content");
 
             this.gridPanelSelector = "#" + this.gridName;
-            this.openPopupButtonSelector = '#' + gridName + '-openpopup';
-            this.clearSortButtonSelector = '#' + gridName + '-clearsort';
+            this.openPopupButtonSelector = '#' + options.gridName + '-openpopup';
+            this.clearSortButtonSelector = '#' + options.gridName + '-clearsort';
             this.sortPopupUrlElementSelector = $("#GetAdvancedSortPopupId");
             this.availableColumnListBoxSelector = "#advanced-sort-available";
             this.selectedColumnListBoxSelector = "#advanced-sort-selected";

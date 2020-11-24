@@ -17,5 +17,7 @@ namespace Kendo.Component.AdvancedSort.Mvc.Models
         public bool UseDefaultSortIconStyle { get; set; }
 
         public bool PreventAutoInitialize { get; set; }
+
+        public string LocalStorageKey { get; set; }
     }
 }

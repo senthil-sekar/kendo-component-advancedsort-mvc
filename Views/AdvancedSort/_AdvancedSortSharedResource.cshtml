@@ -6,9 +6,6 @@
     var loadSharedResource = Convert.ToBoolean(HttpContext.Current.Items[AppConstant.AdvancedSortSharedResourceKey]);
     if (loadSharedResource)
     {
-        <div id="advanced-sort" class="display-none">
-            <div class="sort-content"></div>
-        </div>
         @Html.LoadJavaScript("require.js").Deferred(true)
         @Html.LoadJavaScript("AdvancedSort.js").Deferred(true)
         @Html.LoadJavaScript("AdvancedSortRoot.js")
@@ -22,38 +19,35 @@
                 @data_error_title = "Sort Criteria",
                 @data_error = "An error has occurred while adding Sort Criteria, Please try again."
             })
-        if (!Model.UseDefaultSortIconStyle)
-        {
-            <style type="text/css">
-                /* override the grid sort icon styles to have them visible regardless of column width */
-                .k-grid-header th.k-header {
-                    position: relative;
-                }
+    }
 
-                .k-grid-header th > .k-link > .k-sort-order {
-                    position: absolute;
-                    top: 33%;
-                    right: 24px;
-                }
+    if (!Model.UseDefaultSortIconStyle)
+    {
+        <style type="text/css">
+            /* override the grid sort icon styles to have them visible regardless of column width */
+            #@Model.GridName .k-grid-header th.k-header {
+                position: relative;
+            }
 
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm,
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
-                    position: absolute;
-                    top: 33%;
-                }
+            #@Model.GridName .k-grid-header th > .k-link > .k-sort-order {
+                position: absolute;
+                top: 33%;
+                right: 24px;
+            }
 
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm {
-                    right: 25px;
-                }
+            #@Model.GridName .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm,
+            #@Model.GridName .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
+                position: absolute;
+                top: 33%;
+            }
 
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
-                    right: 40px;
-                }
-                /*.k-grid-header .k-header > .k-link > .k-icon:before {
-                    color: red;
-                }
-                */
-            </style>
-        }
+            #@Model.GridName .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm {
+                right: 25px;
+            }
+
+            #@Model.GridName .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
+                right: 40px;
+            }
+        </style>
     }
 }

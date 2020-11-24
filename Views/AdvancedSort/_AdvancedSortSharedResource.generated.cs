@@ -27,7 +27,7 @@ namespace Kendo.Component.AdvancedSort.Mvc
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
-    using FirstStrike.Retail.Web.KendoComponent.Mvc;
+    using Kendo.Component.AdvancedSort.Mvc;
     
     #line 2 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
     using Kendo.Component.AdvancedSort.Mvc.Common;
@@ -58,86 +58,68 @@ WriteLiteral("\r\n");
     var loadSharedResource = Convert.ToBoolean(HttpContext.Current.Items[AppConstant.AdvancedSortSharedResourceKey]);
     if (loadSharedResource)
     {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        <div");
-
-WriteLiteral(" id=\"advanced-sort\"");
-
-WriteLiteral(" class=\"display-none\"");
-
-WriteLiteral(">\r\n            <div");
-
-WriteLiteral(" class=\"sort-content\"");
-
-WriteLiteral("></div>\r\n        </div>\r\n");
-
-            
-            #line 12 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 9 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
    Write(Html.LoadJavaScript("require.js").Deferred(true));
 
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 9 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
                                                          
         
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 10 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
    Write(Html.LoadJavaScript("AdvancedSort.js").Deferred(true));
 
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 10 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
                                                               
         
             
             #line default
             #line hidden
             
-            #line 14 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 11 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
    Write(Html.LoadJavaScript("AdvancedSortRoot.js"));
 
             
             #line default
             #line hidden
             
-            #line 14 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 11 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
                                                    
         
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 12 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
    Write(Html.LoadCss("main.css"));
 
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 12 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
                                  
         
             
             #line default
             #line hidden
             
-            #line 16 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 13 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
    Write(Html.ActionLink("GetAdvancedSortPopup", "GetAdvancedSortPopup", "AdvancedSort"
             , new { Area = "" }
             , new
@@ -152,60 +134,90 @@ WriteLiteral("></div>\r\n        </div>\r\n");
             #line default
             #line hidden
             
-            #line 24 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+            #line 21 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
               
-        if (!Model.UseDefaultSortIconStyle)
-        {
+    }
+
+    if (!Model.UseDefaultSortIconStyle)
+    {
 
             
             #line default
             #line hidden
-WriteLiteral("            <style");
+WriteLiteral("        <style");
 
 WriteLiteral(" type=\"text/css\"");
 
-WriteLiteral(@">
-                /* override the grid sort icon styles to have them visible regardless of column width */
-                .k-grid-header th.k-header {
-                    position: relative;
-                }
-
-                .k-grid-header th > .k-link > .k-sort-order {
-                    position: absolute;
-                    top: 33%;
-                    right: 24px;
-                }
-
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm,
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
-                    position: absolute;
-                    top: 33%;
-                }
-
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm {
-                    right: 25px;
-                }
-
-                .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {
-                    right: 40px;
-                }
-                /*.k-grid-header .k-header > .k-link > .k-icon:before {
-                    color: red;
-                }
-                */
-            </style>
-");
+WriteLiteral(">\r\n            /* override the grid sort icon styles to have them visible regardl" +
+"ess of column width */\r\n            #");
 
             
-            #line 57 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
-        }
+            #line 28 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th.k-header {\r\n                position: relative;\r\n            }" +
+"\r\n\r\n            #");
+
+            
+            #line 32 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th > .k-link > .k-sort-order {\r\n                position: absolut" +
+"e;\r\n                top: 33%;\r\n                right: 24px;\r\n            }\r\n\r\n  " +
+"          #");
+
+            
+            #line 38 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm,\r\n            #");
+
+            
+            #line 39 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {\r\n                positi" +
+"on: absolute;\r\n                top: 33%;\r\n            }\r\n\r\n            #");
+
+            
+            #line 44 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th > .k-link > .k-icon.k-i-sort-asc-sm {\r\n                right: " +
+"25px;\r\n            }\r\n\r\n            #");
+
+            
+            #line 48 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
+        Write(Model.GridName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" .k-grid-header th > .k-link > .k-icon.k-i-sort-desc-sm {\r\n                right:" +
+" 40px;\r\n            }\r\n        </style>\r\n");
+
+            
+            #line 52 "..\..\Views\AdvancedSort\_AdvancedSortSharedResource.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
         }
     }
 }

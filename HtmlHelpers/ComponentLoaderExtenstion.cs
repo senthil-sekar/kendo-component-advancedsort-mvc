@@ -12,17 +12,7 @@ namespace Kendo.Component.AdvancedSort.Mvc
     {
         #region Advanced Sort
 
-        public static IHtmlString AdvancedSortFor(this HtmlHelper html, string gridName)
-        {
-            return html.AdvancedSortFor(gridName, null, null);
-        }
-
-        public static IHtmlString AdvancedSortFor(this HtmlHelper html, string gridName, object attributes)
-        {
-            return html.AdvancedSortFor(gridName, attributes, null);
-        }
-
-        public static IHtmlString AdvancedSortFor(this HtmlHelper html, string gridName, object attributes, List<string> excludedColumn)
+        public static IHtmlString AdvancedSortFor(this HtmlHelper html, string gridName, object attributes = null, List<string> excludedColumn = null)
         {
             if (string.IsNullOrEmpty(gridName))
                 new MvcHtmlString(AppConstant.ErrorMissingGridName);
@@ -32,7 +22,8 @@ namespace Kendo.Component.AdvancedSort.Mvc
                 GridName = gridName,
                 ExcludedColumn = excludedColumn ?? new List<string>(),
                 UseDefaultSortIconStyle = false,
-                PreventAutoInitialize = false
+                PreventAutoInitialize = false,
+                LocalStorageKey = string.Empty
             };
 
             // bind attributes
@@ -42,6 +33,7 @@ namespace Kendo.Component.AdvancedSort.Mvc
                 model.ButtonClearSortStyle = Convert.ToString(attributes.GetType()?.GetProperty("ButtonClearSortStyle")?.GetValue(attributes));
                 model.UseDefaultSortIconStyle = Convert.ToBoolean(attributes.GetType()?.GetProperty("UseDefaultSortIconStyle")?.GetValue(attributes));
                 model.PreventAutoInitialize = Convert.ToBoolean(attributes.GetType()?.GetProperty("PreventAutoInitialize")?.GetValue(attributes));
+                model.LocalStorageKey = Convert.ToString(attributes.GetType()?.GetProperty("LocalStorageKey")?.GetValue(attributes));
             }
 
             return html.Partial(AppConstant.ViewAdvancedSortToolStrip, model);
@@ -55,13 +47,15 @@ namespace Kendo.Component.AdvancedSort.Mvc
 
             var model = new GridComponentConfigModel
             {
-                UseDefaultSortIconStyle = false
+                UseDefaultSortIconStyle = false,
+                GridName = string.Empty
             };
 
             // bind attributes
             if (attributes != null)
             {
                 model.UseDefaultSortIconStyle = Convert.ToBoolean(attributes.GetType()?.GetProperty("UseDefaultSortIconStyle")?.GetValue(attributes));
+                model.GridName = Convert.ToString(attributes.GetType()?.GetProperty("GridName")?.GetValue(attributes));
             }
 
             return html.Partial(AppConstant.ViewAdvancedSortSharedResource, model);

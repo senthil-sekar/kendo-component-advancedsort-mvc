@@ -13,14 +13,15 @@ define("AdvancedSort/AdvancedSortEntities", ["require", "exports"], function (re
         }
         AdvancedSortEntities.SortColumn = SortColumn;
         class ComponentVariable {
-            constructor(gridName, excludedColumn) {
-                this.gridName = gridName;
-                this.excludedColumn = excludedColumn;
+            constructor(options) {
+                this.gridName = options.gridName;
+                this.localStorageKey = options.localStorageKey && options.localStorageKey !== '' ? options.localStorageKey : options.gridName;
+                this.excludedColumn = options.excludedColumn;
                 this.sortPopupWindow = $("#advanced-sort");
                 this.sortPopupWindowContent = $("#advanced-sort .sort-content");
                 this.gridPanelSelector = "#" + this.gridName;
-                this.openPopupButtonSelector = '#' + gridName + '-openpopup';
-                this.clearSortButtonSelector = '#' + gridName + '-clearsort';
+                this.openPopupButtonSelector = '#' + options.gridName + '-openpopup';
+                this.clearSortButtonSelector = '#' + options.gridName + '-clearsort';
                 this.sortPopupUrlElementSelector = $("#GetAdvancedSortPopupId");
                 this.availableColumnListBoxSelector = "#advanced-sort-available";
                 this.selectedColumnListBoxSelector = "#advanced-sort-selected";
@@ -181,7 +182,7 @@ define("AdvancedSort/AdvancedSortService", ["require", "exports", "AdvancedSort/
             this.componentVariable = null;
             this.localStorage = null;
             this.componentVariable = componentVariable;
-            this.localStorage = new AdvancedSortLocalStorage_1.AdvancedSortLocalStorage(this.componentVariable.gridName);
+            this.localStorage = new AdvancedSortLocalStorage_1.AdvancedSortLocalStorage(this.componentVariable.localStorageKey);
         }
         get sortColumns() {
             return this.localStorage.sortColumns
@@ -253,25 +254,14 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
             };
             this.applySort = () => {
                 if (this.selectedColumnlistBox) {
-                    var items = this.selectedColumnlistBox.items();
-                    let stSort = new Array();
+                    let stSort = this.selectedColumnList;
                     let dsSort = new Array();
-                    if (items.length > 0) {
-                        for (var i = 0; i < items.length; i++) {
-                            var dataItem = this.selectedColumnlistBox.dataItem(items[i]);
-                            var sortPosition = i + 1;
-                            var sortOrder = this.getSortOrder(dataItem);
-                            // data array for storage
-                            stSort.push(new AdvancedSortEntities_1.AdvancedSortEntities.SortColumn({
-                                columnName: dataItem.columnName,
-                                columnValue: dataItem.columnValue,
-                                sortOrder: sortOrder,
-                                sortPosition: sortPosition
-                            }));
-                            // data array for grid
+                    if (stSort.length > 0) {
+                        // data array for grid
+                        for (var i = 0; i < stSort.length; i++) {
                             dsSort.push({
-                                field: dataItem.columnValue,
-                                dir: sortOrder > 0 ? "desc" : "asc"
+                                field: stSort[i].columnValue,
+                                dir: stSort[i].sortOrder > 0 ? "desc" : "asc"
                             });
                         }
                         this.service.syncToStorage(stSort);
@@ -293,6 +283,8 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                 // popup window
                 this.sortPopupWindow.setOptions({
                     close: () => {
+                        // Important!!! Do not alter this code. 
+                        // Destroying the popup window on close is a fix to many bugs in muti grid scenerio
                         if (this.sortPopupWindow) {
                             this.sortPopupWindow.destroy();
                         }
@@ -316,6 +308,10 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                         e.preventDefault();
                     },
                 });
+                // double click to move column to right side
+                this.availableColumnlistBox.wrapper.find(".k-list").on("dblclick", ".k-item", (e) => {
+                    this.availableColumnlistBox._executeCommand("transferTo");
+                });
                 // selected sort column listbox
                 this.selectedColumnlistBox.setOptions({
                     add: (e) => {
@@ -335,23 +331,32 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                         // prevent the default event handled by kendo
                         e.preventDefault();
                         // handle the reorder using custom logic, since kendo's inbuilt reorder event makes the sort order button go undefined
-                        var dataSource = e.sender.dataSource;
-                        for (var i = 0; i < e.dataItems.length; i++) {
-                            var dataItem = e.dataItems[i];
+                        var dataItem = e.dataItems[0]; //since only one item can be ordered at a time, select the first item by default
+                        if (dataItem) {
+                            var dataSource = e.sender.dataSource;
                             var sortOrder = this.getSortOrder(dataItem);
-                            var index = dataSource.indexOf(dataItem) + e.offset;
+                            // compute the new index
+                            var currentIndex = -1;
+                            var currentItems = this.selectedColumnlistBox.items();
+                            for (var i = 0; i < currentItems.length; i++) {
+                                var columnName = $(currentItems[i]).text().trim();
+                                if (columnName && columnName !== '') {
+                                    currentIndex++;
+                                    if (columnName === dataItem.columnName.trim()) {
+                                        break;
+                                    }
+                                }
+                            }
+                            var newindex = currentIndex + e.offset;
                             // manually re order the item
                             dataSource.remove(dataItem);
-                            dataSource.insert(index, dataItem);
+                            dataSource.insert(newindex, dataItem);
                             //persist the current selected sort order
                             var sortOrderControl = this.getSortOrderControl(dataItem.columnValue);
                             if (sortOrderControl) {
                                 sortOrderControl.select(sortOrder);
                             }
-                        }
-                        //persist the selected items
-                        for (var i = 0; i < e.dataItems.length; i++) {
-                            var dataItem = e.dataItems[i];
+                            //persist the selected items
                             e.sender.wrapper.find("[data-uid='" + dataItem.uid + "']").addClass("k-state-selected");
                         }
                     },
@@ -360,6 +365,10 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                         this.initSortOrderControl(items, false);
                         this.toggleAction();
                     }
+                });
+                // double click to move column to left side
+                this.selectedColumnlistBox.wrapper.find(".k-list").on("dblclick", ".k-item", (e) => {
+                    this.availableColumnlistBox._executeCommand("transferFrom");
                 });
                 // apply sort button
                 $(this.componentVariable.applyAdvancedSortSelector).click(() => {
@@ -380,7 +389,7 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                 this.selectedColumnlistBox.setDataSource(this.service.sortColumns);
             };
             this.toggleAction = () => {
-                var selectedItems = this.selectedColumnlistBox.dataSource.data();
+                var selectedItems = this.selectedColumnList;
                 $("#clearAdvancedSort").prop('disabled', selectedItems.length === 0);
                 $("#resetAdvancedSort").prop('disabled', this.arrayEqual(selectedItems, this.service.sortColumns));
             };
@@ -400,7 +409,10 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                 return "#advanced-sort-order-" + this.escapeSelector(columnValue);
             };
             this.escapeSelector = (columnValue) => {
-                return columnValue.replace(/([$%&()*+,./:;<=>?@\[\\\]^\{|}~])/g, '\\$1');
+                if (columnValue) {
+                    return columnValue.replace(/([$%&()*+,./:;<=>?@\[\\\]^\{|}~])/g, '\\$1');
+                }
+                return columnValue;
             };
             this.arrayEqual = (a, b) => {
                 if (a === b)
@@ -437,7 +449,11 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                     "draggable": {
                         "enabled": true
                     },
-                    "selectable": "single"
+                    "selectable": "single",
+                    "add": (e) => {
+                        var listBox = $(this.componentVariable.availableColumnListBoxSelector).data("kendoListBox");
+                        listBox.refresh();
+                    }
                 }).data("kendoListBox");
             }
             return control;
@@ -462,6 +478,29 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
             }
             return control;
         }
+        get selectedColumnList() {
+            let stSort = new Array();
+            if (this.selectedColumnlistBox) {
+                var items = this.selectedColumnlistBox.items();
+                if (items) {
+                    for (var i = 0; i < items.length; i++) {
+                        var dataItem = this.selectedColumnlistBox.dataItem(items[i]);
+                        if (dataItem && dataItem !== '') {
+                            var sortPosition = i + 1;
+                            var sortOrder = this.getSortOrder(dataItem);
+                            // data array for storage
+                            stSort.push(new AdvancedSortEntities_1.AdvancedSortEntities.SortColumn({
+                                columnName: dataItem.columnName,
+                                columnValue: dataItem.columnValue,
+                                sortOrder: sortOrder,
+                                sortPosition: sortPosition
+                            }));
+                        }
+                    }
+                }
+            }
+            return stSort;
+        }
         initSortOrderControl(items, isAdd) {
             for (var i = 0; i < items.length; i++) {
                 var columnValue = items[i].columnValue;
@@ -470,7 +509,12 @@ define("AdvancedSort/AdvancedSortController", ["require", "exports", "AdvancedSo
                     var sortOrderControl = this.getSortOrderControl(columnValue);
                     if (!sortOrderControl) {
                         sortOrderControl = $(this.getSortOrderControlId(columnValue))
-                            .kendoButtonGroup({ index: 0 })
+                            .kendoButtonGroup({
+                            select: (e) => {
+                                this.toggleAction();
+                            },
+                            index: 0
+                        })
                             .data("kendoButtonGroup");
                         if (sortOrderControl) {
                             sortOrderControl.select(isAdd ? 0 : sortOrder);
@@ -492,10 +536,10 @@ define("AdvancedSort/AdvancedSortMain", ["require", "exports", "AdvancedSort/Adv
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AdvancedSort {
-        constructor(gridName, excludedColumn) {
+        constructor(options) {
             this.controller = null;
             this.componentVariable = null;
-            this.componentVariable = new AdvancedSortEntities_2.AdvancedSortEntities.ComponentVariable(gridName, excludedColumn);
+            this.componentVariable = new AdvancedSortEntities_2.AdvancedSortEntities.ComponentVariable(options);
             this.controller = new AdvancedSortController_1.AdvancedSortController(this.componentVariable);
             this.onLoad();
         }
@@ -516,13 +560,16 @@ define("AdvancedSort/AdvancedSortMain", ["require", "exports", "AdvancedSort/Adv
                     this.componentVariable.colFieldMap.push(colField);
                 }
             });
+            // check and unbind click event, if attached already
+            if (this.componentVariable.openPopupButton.isBoundToEvent('click')) {
+                this.componentVariable.openPopupButton.unbind("click");
+            }
+            if (this.componentVariable.clearSortButton.isBoundToEvent('click')) {
+                this.componentVariable.clearSortButton.unbind("click");
+            }
             // wire button events
-            if (!this.componentVariable.openPopupButton.isBoundToEvent('click')) {
-                this.componentVariable.openPopupButton.click(() => this.controller.openPopup());
-            }
-            if (!this.componentVariable.clearSortButton.isBoundToEvent('click')) {
-                this.componentVariable.clearSortButton.click(() => this.controller.clearSort());
-            }
+            this.componentVariable.openPopupButton.click(() => this.controller.openPopup());
+            this.componentVariable.clearSortButton.click(() => this.controller.clearSort());
         }
     }
     exports.AdvancedSort = AdvancedSort;
