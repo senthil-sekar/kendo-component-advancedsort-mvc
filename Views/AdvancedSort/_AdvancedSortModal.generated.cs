@@ -27,7 +27,6 @@ namespace Kendo.Component.AdvancedSort.Mvc
     using System.Web.Security;
     using System.Web.UI;
     using System.Web.WebPages;
-    using FirstStrike.Retail.Web.KendoComponent.Mvc;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Views/AdvancedSort/_AdvancedSortModal.cshtml")]

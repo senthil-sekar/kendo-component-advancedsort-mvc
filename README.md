@@ -76,20 +76,19 @@ Pre-Requisite:
 
     - This component is created for ASP.NET MVC 5, so the client ptoject should also be ASP.NET MVC 5
     - This project is a custom component extention for Kendo MVC dll. So the client project must have all the Kendo MVC references added.
-    - This project also have components intracts with Kendo Grid that is rendered using FirstStrike.Retail.GridBuilder, so the client project must have support for FirstStrike.Retail.GridBuilder.
-
+   
 Web.Config Change:
 
     - This project delivers static resources (e.g. js file) via a HTTP Handler, so the client project must add the following handlers to the web.config
 
     <system.web>
         <httpHandlers>
-		    <add path="FirstStrike.Retail.WebKendoComponentMvcResource.axd" verb="GET" type="FirstStrike.Retail.Web.KendoComponent.Mvc.WebResourceHandler, FirstStrike.Retail.Web.KendoComponent.Mvc"/>
+		    <add path="KendoComponentMvcResource.axd" verb="GET" type="Kendo.Component.AdvancedSort.Mvc.WebResourceHandler, Kendo.Component.AdvancedSort.Mvc"/>
         </httpHandlers>
     </system.web>
     <system.webServer>
         <handlers>
-            <add name="FirstStrikeRetailWebKendoMvcResourceHandler" path="FirstStrike.Retail.WebKendoComponentMvcResource.axd" verb="GET" type="FirstStrike.Retail.Web.KendoComponent.Mvc.WebResourceHandler, FirstStrike.Retail.Web.KendoComponent.Mvc" preCondition="integratedMode" />
+            <add name="KendoComponentMvcResourceHandler" path="KendoComponentMvcResource.axd" verb="GET" type="Kendo.Component.AdvancedSort.Mvc.WebResourceHandler, Kendo.Component.AdvancedSort.Mvc" preCondition="integratedMode" />
 	    </handlers>
     </system.webServer>
 
@@ -97,7 +96,7 @@ Adding the component to the View:
 
     First add dependencies
 
-        - Add reference to the FirstStrike.Retail.Web.KendoComponent.Mvc.dll
+        - Add reference to the Kendo.Component.AdvancedSort.Mvc.dll
         - Using Nuget Package manager add the RazorGenerator.Mvc package
     
     Then use any of the following option to configure your page to have advansed sort
@@ -133,7 +132,7 @@ Adding the component to the View:
         - Using Javascript code. This is usefull when you are required to add Advanced Sort dynamically.
 
             1. Load the Static resources to the page but putting the below code on the top of the page
-                 @using FirstStrike.Retail.Web.KendoComponent.Mvc
+                 @using Kendo.Component.AdvancedSort.Mvc
                  @Html.AdvancedSortSharedResource()
 
             2. Create a placeholder for the advanced sort control to load in, like this <div id="advancedSortPanel"></div>. This would usually goes inside the grid toolbar container.
