@@ -74,7 +74,7 @@ This component is a asp.net mvc driven class library project, so the client proj
 
 Pre-Requisite:
 
-    - This component is created for ASP.NET MVC 5, so the client ptoject should also be ASP.NET MVC 5
+    - This component is created for ASP.NET MVC 5, so the client project should also be ASP.NET MVC 5
     - This project is a custom component extention for Kendo MVC dll. So the client project must have all the Kendo MVC references added.
    
 Web.Config Change:
